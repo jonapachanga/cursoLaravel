@@ -26,5 +26,7 @@
 		{!! $errors->first('mensaje', '<span class=error>:message</span>') !!}
 	<br>
 	<input class="btn btn-primary" type="submit" value="Enviar">
+	<a class="btn btn-secondary" href="{{ route('mensajes.index') }}">Cancelar</a>
+	
 </form>
 @stop
