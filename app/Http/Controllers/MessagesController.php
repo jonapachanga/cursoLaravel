@@ -81,7 +81,7 @@ class MessagesController extends Controller
         //Redireccionar
         Alert::message('Hemos recibido el mensaje!');
         
-        return redirect()->route('mensajes.create');
+        return redirect()->route('mensajes.index');
     }
 
     /**
@@ -147,6 +147,8 @@ class MessagesController extends Controller
     {
         //DB::table('messages')->where('id', $id)->delete();
         Message::findOrFail($id)->delete();
+
+        Alert::success('Mesaje eliminado!')->persistent("Cerrar");
 
         return redirect()->route('mensajes.index');
     }

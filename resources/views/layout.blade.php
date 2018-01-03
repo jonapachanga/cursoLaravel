@@ -64,6 +64,7 @@
                                 {{ auth()->user()->name }}
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/usuarios/{{ auth()->id() }}/edit">Mi perfil</a>
                                     <a class="dropdown-item" href="/logout">Cerrar Sesion</a>
                                 </div>
                             </li>

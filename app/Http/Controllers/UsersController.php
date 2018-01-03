@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use Alert;
 use App\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateUserRequest;
 
 class UsersController extends Controller
 {
@@ -11,7 +14,7 @@ class UsersController extends Controller
     function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('roles:admin');
+        $this->middleware('roles:admin', ['except' => ['edit']]);
     }
 
     /**
@@ -66,7 +69,8 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -76,9 +80,11 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        return back()->with('info', 'Usuario actualizado');
     }
 
     /**
@@ -89,6 +95,8 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::findOrFail($id)->delete();
+        Alert::success('Usuario eliminado!')->persistent("Cerrar");
+        return redirect()->route('usuarios.index');
     }
 }
