@@ -4,8 +4,8 @@
 
 // www.misitio.com/contacto = Route::get('contacto', function(){});
     // App\User::create([
-    //     'name' => 'Matias',
-    //     'email' => 'matias@gmail.com',
+    //     'name' => 'Moderador',
+    //     'email' => 'mod@email.com',
     //     'role_id' => 2,
     //     'password' => bcrypt('123456'),
     // ]);
