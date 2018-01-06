@@ -29,18 +29,20 @@ class User extends Authenticatable
 
     public function hasRoles(array $roles)
     {
-        foreach ($roles as $role) 
-        {
-            foreach ($this->roles as $userRole) {
+        // foreach ($roles as $role) 
+        // {
+        //     foreach ($this->roles as $userRole) {
                 
-                if ($userRole->name === $role) 
-                {
-                    return true;
-                } 
-            }
-        }
-
-        return false;
+        //         if ($userRole->name === $role) 
+        //         {
+        //             return true;
+        //         } 
+        //     }
+        // }
+        
+        // Pluck devuelve un array con el parametro pasado
+        // Intersect busca coincidencias entre arrays
+        return $this->roles->pluck('name')->intersect($roles)->count();
     }
 
     public function roles()
