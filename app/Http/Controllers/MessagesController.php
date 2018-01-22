@@ -49,36 +49,17 @@ class MessagesController extends Controller
      */
     public function store(CreateMessageRequest $request)
     {
-        // Guardar - QueryBuilder
-
-        // DB::table('messages')->insert([
-        //     "nombre" => $request->input('nombre'),
-        //     "email" => $request->input('email'),
-        //     "mensaje" => $request->input('mensaje'),
-        //     "created_at" => Carbon::now(),
-        //     "updated_at" => Carbon::now(),
-        // ]);
-
-        // Eloquent Forma 1
-
-        // $message = new Message;
-        // $message->nombre = $request->input('nombre');
-        // $message->email = $request->input('email');
-        // $message->mensaje = $request->input('mensaje');
-        // $message->save();
-
         // Eloquent Forma 2
         //Model::unguard(); // Deshabilitar la asignacion de proteccion masiva
-        //dd($request->all());
-        Message::create($request->all());
 
-        // Message::create([
-        //     "nombre" => $request->input('nombre'),
-        //     "email" => $request->input('email'),
-        //     "mensaje" => $request->input('mensaje'),
-        // ]);
+        $message = Message::create($request->all());
 
         //Redireccionar
+
+        if (auth()->check()) 
+        {
+            auth()->user()->messages()->save($message);
+        }
         Alert::message('Hemos recibido el mensaje!');
         
         return redirect()->route('mensajes.index');

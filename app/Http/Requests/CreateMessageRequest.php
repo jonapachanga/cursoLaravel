@@ -23,11 +23,17 @@ class CreateMessageRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'nombre' => 'required',
-            'email' => 'email | required',
-            //'email' => ['email , required'],
-            'mensaje' => 'required | min:5',
-        ];
+        if ( auth()->guest() ){
+            return [
+                'nombre' => 'required',
+                'email' => 'required|email',
+                'mensaje' => 'required|min:5'
+            ];
+        }
+        else{
+            return [
+                'mensaje' => 'required|min:5'
+            ];
+        }
     }
 }
