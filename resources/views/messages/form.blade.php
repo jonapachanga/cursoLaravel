@@ -1,6 +1,6 @@
 {{--  <input type="hidden" value="{{ csrf_token() }}">  --}}
 {{ csrf_field() }}
-@unless($messages->user_id)
+@unless($message->user_id)
     <label for="">
         Nombre
         <input class="form-control" type="text" name="nombre" value="{{ $message->nombre or old('nombre') }}">
