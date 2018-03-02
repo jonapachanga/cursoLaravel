@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\MessagesSaving;
 use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
@@ -20,9 +21,22 @@ class Message extends Model
 
      protected $fillable = ['nombre', 'email', 'mensaje'];
 
+    protected $dispatchesEvents = [
+        'saving' => MessagesSaving::class,
+    ];
+
      public function user()
      {
          return $this->belongsTo(User::class);
      }
+     public function note()
+     {
+         return $this->morphOne(Note::class, 'notable');
+     }
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
 }
 

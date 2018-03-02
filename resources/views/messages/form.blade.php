@@ -1,6 +1,6 @@
 {{--  <input type="hidden" value="{{ csrf_token() }}">  --}}
 {{ csrf_field() }}
-@unless($message->user_id)
+@if($showFields)
     <label for="">
         Nombre
         <input class="form-control" type="text" name="nombre" value="{{ $message->nombre or old('nombre') }}">
@@ -12,7 +12,7 @@
         <input class="form-control" type="email" name="email" value="{{ $message->email or old('email') }}">
         {!! $errors->first('email', '<span class=error>:message</span>') !!}
     </label>
-@endunless
+@endif
 <br>
 <label for="">
     Mensaje

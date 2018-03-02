@@ -13,19 +13,7 @@
 <form action="{{ route('usuarios.update', $user->id) }}" method="POST">
     {!! method_field('PUT') !!}
 	{{--  <input type="hidden" value="{{ csrf_token() }}">  --}}
-	{{ csrf_field() }}
-	<label for="">
-		Nombre
-		<input class="form-control" type="text" name="name" value="{{ $user->name }}">
-		{!! $errors->first('nombre','<span class=error>:user</span>') !!}
-	</label>
-	<br>
-	<label for="">
-		Email
-		<input class="form-control" type="email" name="email" value="{{ $user->email }}">
-		{!! $errors->first('email', '<span class=error>:message</span>') !!}
-	</label>
-	<br>
+	@include('users.form')
 	<input class="btn btn-primary" type="submit" value="Enviar">
 	<a class="btn btn-secondary" href="{{ route('usuarios.index') }}">Cancelar</a>
 	

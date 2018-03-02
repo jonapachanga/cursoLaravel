@@ -9,6 +9,8 @@
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Mensaje</th>
+                <th>Notas</th>
+                <th>Etiquetas</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -29,6 +31,8 @@
                             {{ $message->mensaje }}
                         <a/>
                     </td>
+                    <td>{{ optional($message->note)->body }}</td>
+                    <td>{{ $message->tags->pluck('name')->implode(', ') }}</td>
                     <td>
                         <a class="btn btn-info btn-sm" href="{{ route('mensajes.edit', $message->id) }}">Editar</a>
                         <form style="display:inline;" action="{{ route('mensajes.destroy', $message->id) }}" method="POST">

@@ -7,6 +7,7 @@ use Alert;
 use App\Message;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Events\MessageWasReceived;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Requests\CreateMessageRequest;
 
@@ -27,7 +28,7 @@ class MessagesController extends Controller
     {
         //$messages = DB::table('messages')->get(); // Query Builder
 
-        $messages = Message::all(); // Eloquent
+        $messages = Message::with(['user', 'note', 'tags'])->get(); // Eloquent
         return view('messages.index', compact('messages'));
     }
 
@@ -61,6 +62,9 @@ class MessagesController extends Controller
             auth()->user()->messages()->save($message);
         }
         Alert::message('Hemos recibido el mensaje!');
+
+        event(new MessageWasReceived($message));
+
         
         return redirect()->route('mensajes.index');
     }

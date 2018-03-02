@@ -21,6 +21,12 @@
     //     'display_name' => 'Administrador del Sitio',
     //     'description' => 'Permite administrar todo el sitio',
     // ]);
+
+// Para ver las consultas sql
+
+//    DB::listen(function ($query){
+//        echo "<pre>{ $query->sql }</pre>";
+//    });
     
     Route::get('roles', function(){
         return \App\Role::with('user')->get();

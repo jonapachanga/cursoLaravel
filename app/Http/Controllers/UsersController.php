@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUserRequest;
+use App\Role;
 use DB;
 use Alert;
 use App\User;
-use Illuminate\Http\Request;
 use App\Http\Requests\UpdateUserRequest;
 
 class UsersController extends Controller
@@ -24,7 +25,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::with(['roles', 'note', 'tags'])->get();
 
         return view('users.index', compact('users'));
     }
@@ -36,18 +37,23 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::pluck('display_name', 'id');
+        return view('users.create', compact('roles'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateUserRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
-        //
+        $user = User::create($request->all());
+
+        $user->roles()->attach($request->roles);
+
+        return redirect()->route('usuarios.index');
     }
 
     /**
@@ -72,22 +78,25 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        $this->authorize('edit',$user);
-        return view('users.edit', compact('user'));
+        $this->authorize('edit',app(User::class));
+        $roles = Role::pluck('display_name', 'id');
+        return view('users.edit', compact('user', 'roles'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UpdateUserRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateUserRequest $request, $id)
     {
+        $roles = $request->roles;
         $user = User::findOrFail($id);
-        $this->authorize('update',$user);
-        $user->update($request->all());
+        $this->authorize('update',app(User::class));
+        $user->update($request->only(['name', 'email']));
+        $user->roles()->sync($roles);
         return back()->with('info', 'Usuario actualizado');
     }
 
@@ -99,7 +108,7 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('destroy',$user);
+        $this->authorize('destroy', app(User::class));
         User::findOrFail($id)->delete();
         Alert::success('Usuario eliminado!')->persistent("Cerrar");
         return back();
