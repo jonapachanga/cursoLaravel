@@ -28,7 +28,9 @@ class MessagesController extends Controller
     {
         //$messages = DB::table('messages')->get(); // Query Builder
 
-        $messages = Message::with(['user', 'note', 'tags'])->get(); // Eloquent
+        $messages = Message::with(['user', 'note', 'tags'])
+                ->orderBy('created_at', \request('sorted', 'DESC'))
+                ->paginate(10); // Eloquent
         return view('messages.index', compact('messages'));
     }
 

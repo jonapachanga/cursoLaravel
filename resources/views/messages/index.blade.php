@@ -42,7 +42,10 @@
                         </form>
                     </td>
                 </tr>
+
             @endforeach
+        {!! $messages->appends(request()->query())->links() !!}
+        {{-- request()->query() mantiene persistente todos los parametro que pasemos por url--}}
         </tbody>
     </table>
 @stop
